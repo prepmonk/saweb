@@ -1,8 +1,9 @@
 from typing import Optional
 
-from fastapi import Request, HTTPException
+from fastapi import Request, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
+from schemas.user import UserModel
 from security.jwt_middleware import verify_token, decode_access_token
 
 
@@ -19,9 +20,17 @@ class AuthBearer(HTTPBearer):
             raise HTTPException(
                 status_code=403, detail="Authentication credentials missing"
             )
+        token = credentials.credentials
+        print(token)
+        return await self.authenticate(token)
 
-    async def authenticate(self, token: str) -> dict:
+    async def authenticate(self, token: str) -> UserModel:
+        print(f"authenticate = {token}")
         if verify_token(token):
-            decode_access_token(token)
+            return decode_access_token(token)
+
         return None
 
+
+def get_current_user(user: UserModel = Depends(AuthBearer())) -> UserModel:
+    return user

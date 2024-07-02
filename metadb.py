@@ -29,3 +29,4 @@ def get_supabase_client() -> Client:
                 storage_client_timeout=10,
                 schema="public",
             ))
+    return _supabase_client

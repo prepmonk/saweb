@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 
 from security.cors import add_app_cors
 from logger import get_logger
+from services.engine_router import engine_router
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -17,6 +18,7 @@ logger = get_logger(__name__)
 
 app = FastAPI()
 add_app_cors(app)
+app.include_router(engine_router)
 
 
 @app.middleware("http")
@@ -31,7 +33,7 @@ async def add_process_time_header(request: Request, call_next):
 @app.exception_handler(HTTPException)
 async def exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(
-        status_code=418,
+        status_code=exc.status_code,
         content={'message': f"Something went wrong {exc}, there is rainbow"})
 
 
