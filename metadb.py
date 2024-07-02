@@ -16,7 +16,6 @@ class SupabaseSettings(BaseSettings):
 
 settings = SupabaseSettings()
 _supabase_client: Optional[Client] = None
-print(settings)
 
 
 def get_supabase_client() -> Client:
@@ -25,10 +24,5 @@ def get_supabase_client() -> Client:
         _supabase_client = create_client(
             settings.supabase_url,
             settings.supabase_key,
-            # options=ClientOptions(
-            #     postgrest_client_timeout=10,
-            #     storage_client_timeout=10,
-            #     schema="public",
-            # )
         )
     return _supabase_client
