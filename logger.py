@@ -2,7 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
-FORMAT = "[%(levelname)s] [%(asctime)s] : %(message)s"
+FORMAT = "%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]: %(message)s"
 
 
 def get_logger(name, log_file_name="app.log"):
